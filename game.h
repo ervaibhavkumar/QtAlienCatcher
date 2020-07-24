@@ -6,6 +6,7 @@
 #include <QKeyEvent>
 
 #include "spaceship.h"
+#include "alien.h"
 
 class Game : public QGraphicsView
 {
@@ -22,9 +23,14 @@ private:
     void moveBackward();
     void rotateAnticlockwise();
     void rotateClockwise();
+    void emergeFromOtherEnd();
+
+    void DisplayAliens();
+    QSize getRandomPos();
 
     QSize screenSize;
     Spaceship* ship = nullptr;
+    QList<Alien*> alienList;
 };
 
 #endif // GAME_H
