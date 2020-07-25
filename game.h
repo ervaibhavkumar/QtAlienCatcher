@@ -24,13 +24,15 @@ private:
     void rotateAnticlockwise();
     void rotateClockwise();
     void emergeFromOtherEnd();
+    void removeAlienOnCapture();
 
     void DisplayAliens();
     QSize getRandomPos();
+    Alien* createNewAlien();
+    void playSuccessSound();
 
     QSize screenSize;
     Spaceship* ship = nullptr;
-    QList<Alien*> alienList;
 };
 
 #endif // GAME_H

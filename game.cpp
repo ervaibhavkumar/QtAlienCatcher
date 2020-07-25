@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QGraphicsView>
 #include <QGraphicsScene>
+#include <QMediaPlayer>
 #include <random>
 
 Game::Game(QSize sizeOfScreen, QGraphicsView *parent)
@@ -38,19 +39,23 @@ void Game::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
         case Qt::Key_Up : {
             emergeFromOtherEnd();
+            removeAlienOnCapture();
             moveForward();
             break;
         }
         case Qt::Key_Down: {
             emergeFromOtherEnd();
+            removeAlienOnCapture();
             moveBackward();
             break;
         }
         case Qt::Key_Left: {
+            removeAlienOnCapture();
             rotateAnticlockwise();
             break;
         }
         case Qt::Key_Right: {
+            removeAlienOnCapture();
             rotateClockwise();
             break;
         }
@@ -174,18 +179,8 @@ void Game::emergeFromOtherEnd() {
 }
 
 void Game::DisplayAliens() {
-    alienList.clear();
-    Alien* alien;
-    qDebug() << screenSize.width() << " " << screenSize.height();
     for (auto i = 0; i < maxAliens; i++) {
-        QSize pos = getRandomPos();
-        alien = new Alien();
-        alien->setPos(pos.width(), pos.height());
-        qDebug() << pos.width() << " " << pos.height();
-        alien->setFocus();
-        alienList << alien;
-
-        scene()->addItem(alien);
+        scene()->addItem(createNewAlien());
     }
 }
 
@@ -198,4 +193,31 @@ QSize Game::getRandomPos() {
     int y = dsHeight(mt);
     QSize *size = new QSize(x,y);
     return *size;
+}
+
+void Game::removeAlienOnCapture() {
+    for (auto const item : ship->collidingItems()) {
+        Alien* alien = dynamic_cast<Alien*>(item);
+        if (alien != nullptr) {
+            scene()->removeItem(alien);
+            playSuccessSound();
+            scene()->addItem(createNewAlien());
+        }
+    }
+}
+
+Alien* Game::createNewAlien() {
+    Alien* newAlien = new Alien();
+    QSize pos = getRandomPos();
+
+    newAlien->setPos(pos.width(), pos.height());
+    newAlien->setFocus();
+    return newAlien;
+}
+
+void Game::playSuccessSound() {
+    QMediaPlayer *player = new QMediaPlayer(this);
+    player->setMedia(QUrl("qrc:/audio/success.mp3"));
+    player->play();
+
 }

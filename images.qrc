@@ -3,5 +3,6 @@
         <file>images/BlueCannon.png</file>
         <file>images/RedAlien.png</file>
         <file>images/SpaceInvadersBg.jpg</file>
+        <file>audio/success.mp3</file>
     </qresource>
 </RCC>

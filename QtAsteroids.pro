@@ -1,5 +1,7 @@
 # QT -= gui
 
+QT += multimedia
+
 CONFIG += c++11 console
 CONFIG -= app_bundle
 
@@ -35,3 +37,6 @@ QT += widgets
 
 RESOURCES += \
     images.qrc
+
+DISTFILES += \
+    audio/success.mp3
